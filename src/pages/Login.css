@@ -1,0 +1,255 @@
+.login-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: #ffffff;
+    /* Light background for the form side as per image reference */
+    color: #1a1b1f;
+    /* Dark text for light background */
+}
+
+/* Dark Mode Support for Login */
+[data-theme='dark'] .login-container {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.login-left {
+    flex: 1;
+    padding: 40px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 600px;
+    /* Prevent it from being too wide on large screens if split handled differently */
+    background: white;
+    /* Force white for form side to match image style exactly, or adapt? Image has white left side. */
+}
+
+[data-theme='dark'] .login-left {
+    background: var(--bg-primary);
+}
+
+.login-right {
+    flex: 1;
+    background: linear-gradient(135deg, #fca311 0%, #e0920f 100%);
+    /* Orange gradient */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header */
+.login-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 20px;
+    color: inherit;
+}
+
+/* Content */
+.login-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.welcome-text h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.welcome-text p {
+    color: #a1a1aa;
+    font-size: 14px;
+}
+
+/* Toggle */
+.auth-toggle {
+    background: #f4f4f5;
+    padding: 4px;
+    border-radius: 12px;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+[data-theme='dark'] .auth-toggle {
+    background: var(--bg-tertiary);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    background: transparent;
+    color: #71717a;
+    transition: all 0.2s;
+}
+
+.toggle-btn.active {
+    background: white;
+    color: black;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .toggle-btn.active {
+    background: var(--bg-secondary);
+    color: white;
+}
+
+/* Form */
+.input-group {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    gap: 12px;
+}
+
+[data-theme='dark'] .input-group {
+    border-color: var(--border-color);
+}
+
+.input-icon {
+    color: #a1a1aa;
+}
+
+.input-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper label {
+    font-size: 10px;
+    color: #a1a1aa;
+    font-weight: 500;
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: inherit;
+    background: transparent;
+}
+
+.check-icon {
+    color: #22c55e;
+    /* Green check */
+}
+
+.btn-continue {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: #2563eb;
+    /* Blue in image, changing to Orange */
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-continue:hover {
+    background-color: var(--accent-hover);
+}
+
+.divider {
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+    color: #a1a1aa;
+    font-size: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+[data-theme='dark'] .divider span {
+    background: var(--bg-primary);
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #e4e4e7;
+    z-index: 0;
+}
+
+[data-theme='dark'] .divider::before {
+    background: var(--border-color);
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #e4e4e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: white;
+    color: black;
+    transition: background 0.2s;
+}
+
+[data-theme='dark'] .social-btn {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: white;
+}
+
+.social-btn:hover {
+    background: #f4f4f5;
+}
+
+.login-footer-text {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-align: center;
+    line-height: 1.6;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .login-right {
+        display: none;
+        /* Hide art on mobile to focus on form */
+    }
+
+    .login-left {
+        padding: 20px;
+        max-width: 100%;
+    }
+}
