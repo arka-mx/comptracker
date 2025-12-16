@@ -63,9 +63,67 @@ export const AuthProvider = ({ children }) => {
 
     // Keep the Github mock or remove? User asked to "implement google auth". 
     // We can keep github as a simulated fallback or separate route.
-    const loginWithGithub = async (username) => {
-        // TODO: Implement GitHub Auth Backend Flow
-        alert("GitHub Auth backend not yet implemented. Please use Google or configure backend.");
+    const loginWithEmail = async (email, password) => {
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+                return true;
+            } else {
+                alert(data.message || 'Login failed');
+                return false;
+            }
+        } catch (error) {
+            console.error('Login error', error);
+            return false;
+        }
+    };
+
+    const registerWithEmail = async (email, password, name) => {
+        try {
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, name })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+                return true;
+            } else {
+                alert(data.message || 'Registration failed');
+                return false;
+            }
+        } catch (error) {
+            console.error('Registration error', error);
+            return false;
+        }
+    };
+
+    const loginWithGithub = async (code) => {
+        try {
+            const res = await fetch('/api/auth/github', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+                return true;
+            } else {
+                alert(data.message || 'GitHub Login failed');
+                return false;
+            }
+        } catch (error) {
+            console.error('GitHub Login error', error);
+            return false;
+        }
     };
 
     const logout = async () => {
@@ -118,8 +176,42 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async (details) => {
+        try {
+            const res = await fetch('/api/auth/update-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            console.error('Update profile error', err);
+            return false;
+        }
+    };
+
+    const deleteAccount = async () => {
+        try {
+            const res = await fetch('/api/auth/delete', { method: 'DELETE' });
+            if (res.ok) {
+                setUser(null);
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.error('Delete account error', err);
+            return false;
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, logout, updateStats, updateHandle }}>
+        <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, loginWithEmail, registerWithEmail, logout, updateStats, updateHandle, updateProfile, deleteAccount }}>
             {children}
         </AuthContext.Provider>
     );

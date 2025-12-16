@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import { Trophy, Code, Terminal, Edit2, Check, X } from 'lucide-react';
+import { Code, Terminal, Edit2, Check, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { fetchLeetCodeStats, fetchCodeForcesStats, fetchCodeChefStats } from '../services/api';
+import { fetchLeetCodeStats, fetchCodeForcesStats } from '../services/api';
 import './Tracker.css';
 
 const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, storageKey, apiFunc, userHandle, onUpdateHandle }) => {
     const [count, setCount] = useState(() => {
         const saved = localStorage.getItem(storageKey);
-        return saved ? parseInt(saved, 10) : initialCount;
+        // If saved exists, use it. Otherwise use initialCount if provided, else "-"
+        if (saved !== null) return parseInt(saved, 10);
+        return initialCount !== undefined ? initialCount : '-';
     });
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -28,7 +30,8 @@ const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, stora
         setIsUpdating(true);
         try {
             if (apiFunc && userHandle) {
-                const newCount = await apiFunc(userHandle);
+                const data = await apiFunc(userHandle);
+                const newCount = typeof data === 'object' ? data.count : data;
                 setCount(newCount);
                 alert(`Synced ${name} for ${userHandle}!`);
             } else {
@@ -112,7 +115,7 @@ const Tracker = () => {
     const defaultHandle = user?.email?.split('@')[0] || '';
     const leetcodeHandle = user?.apiHandles?.leetcode || defaultHandle;
     const codeforcesHandle = user?.apiHandles?.codeforces || defaultHandle;
-    const codechefHandle = user?.apiHandles?.codechef || defaultHandle;
+
 
     return (
         <div className="tracker-page">
@@ -125,29 +128,17 @@ const Tracker = () => {
                         platformId="leetcode"
                         icon={Code}
                         color="#ffa116"
-                        initialCount={150}
                         storageKey={`leetcode_${leetcodeHandle}`}
                         apiFunc={fetchLeetCodeStats}
                         userHandle={leetcodeHandle}
                         onUpdateHandle={updateHandle}
                     />
-                    <PlatformCard
-                        name="CodeChef"
-                        platformId="codechef"
-                        icon={Trophy}
-                        color="#5b4638"
-                        initialCount={45}
-                        storageKey={`codechef_${codechefHandle}`}
-                        apiFunc={fetchCodeChefStats}
-                        userHandle={codechefHandle}
-                        onUpdateHandle={updateHandle}
-                    />
+
                     <PlatformCard
                         name="CodeForces"
                         platformId="codeforces"
                         icon={Terminal}
                         color="#318ce7"
-                        initialCount={80}
                         storageKey={`codeforces_${codeforcesHandle}`}
                         apiFunc={fetchCodeForcesStats}
                         userHandle={codeforcesHandle}

@@ -36,6 +36,14 @@ const Sidebar = () => {
         }
     };
 
+    const handleProfileClick = () => {
+        if (!user) {
+            alert("Profile can be seen only if you are logged in");
+            return;
+        }
+        navigate('/profile');
+    };
+
     return (
         <nav className="sidebar">
             <div className="sidebar-logo">
@@ -52,7 +60,11 @@ const Sidebar = () => {
             </div>
 
             <div className="sidebar-footer">
-                <div className="sidebar-item" onClick={() => handlePlaceholderClick('Profile')} title="Profile">
+                <div
+                    className={`sidebar-item ${location.pathname === '/profile' ? 'active' : ''}`}
+                    onClick={handleProfileClick}
+                    title="Profile"
+                >
                     <User size={20} />
                 </div>
                 <div className="sidebar-item" onClick={handleLogout} title="Logout">

@@ -1,19 +1,19 @@
 {
   "name": "comptracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "Comptracker Merged",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "nodemon index.js",
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -23,8 +23,8 @@
     "lucide-react": "^0.561.0",
     "mongoose": "^9.0.1",
     "nodemon": "^3.1.11",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^7.10.1"
   },
   "devDependencies": {

@@ -11,11 +11,14 @@ export const fetchLeetCodeStats = async (handle) => {
 
         if (data.status === 'error') throw new Error(data.message);
 
-        return data.totalSolved; // Returns number
+        return {
+            count: data.totalSolved,
+            activeSeconds: data.totalSolved * 1800 // Est. 30 mins per problem
+        };
     } catch (error) {
         console.warn('LeetCode fetch failed (likely CORS or invalid handle), using mock data:', error);
         // Fallback Mock
-        return Math.floor(Math.random() * 50) + 150;
+        return { count: "-", activeSeconds: 0 };
     }
 };
 
@@ -41,13 +44,16 @@ export const fetchCodeForcesStats = async (handle) => {
                         solved.add(`${sub.problem.contestId}-${sub.problem.index}`);
                     }
                 });
-                return solved.size;
+                return {
+                    count: solved.size,
+                    activeSeconds: solved.size * 2400 // Est. 40 mins per problem
+                };
             }
         }
-        return 120; // Default fallback
+        return { count: 120, activeSeconds: 120 * 2400 }; // Default fallback
     } catch (error) {
         console.warn('CodeForces fetch failed, using mock data:', error);
-        return Math.floor(Math.random() * 50) + 80;
+        return { count: "-", activeSeconds: 0 };
     }
 };
 

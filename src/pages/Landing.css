@@ -37,7 +37,7 @@
 
 /* Actually in the image 'Comptracker' is orange/white split? No, looks like "Cod" white "olio" orange. I'll make it all bold or try split color if needed, but keeping simple for now. */
 .brand-highlight {
-    color: white;
+    color: var(--text-primary);
 }
 
 /* .hero-subtitle contains "Comptracker" but maybe I should use span for orange part */
@@ -116,5 +116,5 @@
 .stat-value {
     font-size: 24px;
     font-weight: 700;
-    color: white;
+    color: var(--text-primary);
 }

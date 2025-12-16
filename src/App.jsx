@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import Tracker from './pages/Tracker';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -26,6 +27,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Tracker />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectedRoute>
+                                    <Profile />
                                 </ProtectedRoute>
                             }
                         />

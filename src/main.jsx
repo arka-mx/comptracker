@@ -7,6 +7,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider } from './context/AuthContext'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
+console.log("DEBUG: Google Client ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID_HERE"}>

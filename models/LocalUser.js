@@ -1,18 +1,26 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const localUserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
         unique: true
     },
-    googleId: {
+    password: {
         type: String,
-        unique: true,
-        sparse: true
+        required: true
     },
-    name: String,
-    avatar: String,
+    name: {
+        type: String,
+        default: 'User'
+    },
+    avatar: {
+        type: String,
+        default: ''
+    },
+    bio: String,
+    phone: String,
+    location: String,
     apiHandles: {
         leetcode: String,
         codeforces: String,
@@ -27,6 +35,6 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { collection: 'locals' });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model('LocalUser', localUserSchema);
