@@ -76,9 +76,9 @@ const Landing = () => {
 
                     <div className="stats-preview">
                         <div className="stat-card p-1">
-                            <div className="avatar-small">
+                            {/* <div className="avatar-small">
                                 {user?.avatar && <img src={user.avatar} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />}
-                            </div>
+                            </div> */}
                             <div className="stat-info">
                                 <h3>{user?.name || 'Guest User'}</h3>
                                 <span>Programmer</span>

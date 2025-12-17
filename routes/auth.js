@@ -4,6 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import LocalUser from '../models/LocalUser.js';
+import fetch from 'node-fetch';
 
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -207,7 +208,7 @@ router.post('/github', async (req, res) => {
 
     } catch (err) {
         console.error('GitHub Auth Error:', err);
-        res.status(500).json({ message: 'Server Error during GitHub Auth' });
+        res.status(500).json({ message: 'Server Error: ' + err.message });
     }
 });
 
