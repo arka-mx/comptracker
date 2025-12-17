@@ -10,10 +10,25 @@ dotenv.config();
 const app = express();
 
 // Middleware
+app.set('trust proxy', 1); // Trust first proxy (Render load balancer)
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:5173',
+            'http://localhost:3000',
+            process.env.CLIENT_URL,
+            'https://comptracker-frontend.onrender.com' // Explicitly add frontend URL just in case env is missing
+        ].filter(Boolean);
+
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.log('Blocked Origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 

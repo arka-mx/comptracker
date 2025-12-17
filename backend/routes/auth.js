@@ -45,7 +45,8 @@ router.post('/register', async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true, // Always true for SameSite: None
+            sameSite: 'none',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
@@ -89,7 +90,8 @@ router.post('/login', async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true, // Always true for SameSite: None
+            sameSite: 'none',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
@@ -189,7 +191,8 @@ router.post('/github', async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true, // Always true for SameSite: None
+            sameSite: 'none',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
@@ -275,7 +278,8 @@ router.post('/google', async (req, res) => {
 
         res.cookie('token', jwtToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
+            sameSite: 'none',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
@@ -398,7 +402,8 @@ router.post('/update-profile', async (req, res) => {
 router.post('/logout', (req, res) => {
     res.clearCookie('token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
+        sameSite: 'none',
         path: '/'
     });
     res.json({ message: 'Logged out' });
@@ -421,7 +426,8 @@ router.delete('/delete', async (req, res) => {
 
         res.clearCookie('token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
+            sameSite: 'none',
             path: '/'
         });
         res.json({ message: 'Account deleted' });
