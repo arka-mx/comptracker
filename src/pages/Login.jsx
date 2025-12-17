@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Github } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -58,12 +59,16 @@ const Login = () => {
         // Redirect to GitHub OAuth
         const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || "YOUR_GITHUB_CLIENT_ID"; // Fallback or from env
         // DEBUG: Verify ID is loaded
-        alert(`Debug: GitHub Client ID is ${clientId}`);
+        if (clientId.includes("YOUR_")) {
+            toast.error("Please set VITE_GITHUB_CLIENT_ID in your .env file");
+            return; // Don't show the debug alert anymore either
+        }
+        // alert(`Debug: GitHub Client ID is ${clientId}`);
 
         // If user hasn't set env yet, this will fail on GitHub side, which is expected during setup.
         // Alert user if key is obviously missing?
         if (clientId === "YOUR_GITHUB_CLIENT_ID") {
-            alert("Please set VITE_GITHUB_CLIENT_ID in your .env file");
+            toast.error("Please set VITE_GITHUB_CLIENT_ID in your .env file");
             return;
         }
 
@@ -72,7 +77,7 @@ const Login = () => {
 
     const handleSubmit = async () => {
         if (!email || !password) {
-            alert("Please enter email and password");
+            toast.error("Please enter email and password");
             return;
         }
 
@@ -80,7 +85,7 @@ const Login = () => {
         let success;
         if (isRegistering) {
             if (!name) {
-                alert("Please enter your name");
+                toast.error("Please enter your name");
                 setIsLoggingIn(false);
                 return;
             }

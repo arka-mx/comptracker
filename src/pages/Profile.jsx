@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { User, Shield, Users, Bell, CreditCard, Download, Trash2, Edit2, Check, X, Camera } from 'lucide-react';
 import './Profile.css';
@@ -59,7 +60,7 @@ const Profile = () => {
             if (section === 'personal') setIsEditing(false);
             if (section === 'address') setIsEditingAddress(false);
         } else {
-            alert('Failed to update profile');
+            toast.error('Failed to update profile');
         }
     };
 
@@ -90,7 +91,8 @@ const Profile = () => {
             const base64String = reader.result;
             // Update profile with new avatar
             const success = await updateProfile({ avatar: base64String });
-            if (!success) alert('Failed to upload photo');
+            if (!success) toast.error('Failed to upload photo');
+            else toast.success('Profile photo updated!');
         };
         reader.readAsDataURL(file);
     };
@@ -120,7 +122,7 @@ const Profile = () => {
                         if (success) {
                             window.location.href = '/login';
                         } else {
-                            alert('Failed to delete account');
+                            toast.error('Failed to delete account');
                         }
                     }
                 }}>

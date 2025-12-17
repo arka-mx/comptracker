@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import Header from '../components/Header';
 import { Code, Terminal, Edit2, Check, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -33,16 +34,16 @@ const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, stora
                 const data = await apiFunc(userHandle);
                 const newCount = typeof data === 'object' ? data.count : data;
                 setCount(newCount);
-                alert(`Synced ${name} for ${userHandle}!`);
+                toast.success(`Synced ${name} for ${userHandle}!`);
             } else {
                 setTimeout(() => {
                     // Fallback to manual increment simulation if no API
                     setCount(c => c + 1);
-                    alert(`Manual update for ${name}`);
-                }, 500);
+                    toast.success(`Manual update for ${name}`);
+                }, 5);
             }
         } catch (error) {
-            alert(`Failed to sync ${name}: ${error.message}`);
+            toast.error(`Failed to sync ${name}: ${error.message}`);
         } finally {
             setIsUpdating(false);
         }

@@ -1,4 +1,5 @@
 import React from 'react';
+import toast from 'react-hot-toast';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     Home,
@@ -20,13 +21,11 @@ const Sidebar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    const handlePlaceholderClick = (feature) => {
-        alert(`${feature} feature coming soon!`);
-    };
+
 
     const handleLogout = async () => {
         if (!user) {
-            alert("user already logged out");
+            toast.error("User already logged out");
             return;
         }
 
@@ -38,7 +37,7 @@ const Sidebar = () => {
 
     const handleProfileClick = () => {
         if (!user) {
-            alert("Profile can be seen only if you are logged in");
+            toast.error("Profile can be seen only if you are logged in");
             return;
         }
         navigate('/profile');
@@ -51,10 +50,30 @@ const Sidebar = () => {
             </div>
 
             <div className="sidebar-menu">
-                <NavLink to="/" className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`} title="Home">
+                <NavLink
+                    to="/"
+                    className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+                    title="Home"
+                    onClick={(e) => {
+                        if (!user) {
+                            e.preventDefault();
+                            toast.error("User not logged in");
+                        }
+                    }}
+                >
                     <Home size={20} />
                 </NavLink>
-                <NavLink to="/tracker" className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`} title="Tracker">
+                <NavLink
+                    to="/tracker"
+                    className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+                    title="Tracker"
+                    onClick={(e) => {
+                        if (!user) {
+                            e.preventDefault();
+                            toast.error("User not logged in");
+                        }
+                    }}
+                >
                     <Globe size={20} />
                 </NavLink>
             </div>

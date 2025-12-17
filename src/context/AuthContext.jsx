@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
                 console.error('Login failed:', data.message);
                 // Fallback for demo if backend rejects (due to missing keys)
                 // We alert the user they need to configure env
-                alert(`Backend Login Failed: ${data.message}. \n\nPlease configure server .env with real keys.`);
+                toast.error(`Backend Login Failed: ${data.message}. \n\nPlease configure server .env with real keys.`);
                 return null;
             }
         } catch (error) {
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(data.user);
                 return true;
             } else {
-                alert(data.message || 'Login failed');
+                toast.error(data.message || 'Login failed');
                 return false;
             }
         } catch (error) {
@@ -96,7 +97,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(data.user);
                 return true;
             } else {
-                alert(data.message || 'Registration failed');
+                toast.error(data.message || 'Registration failed');
                 return false;
             }
         } catch (error) {
@@ -117,7 +118,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(data.user);
                 return true;
             } else {
-                alert(data.message || 'GitHub Login failed');
+                toast.error(data.message || 'GitHub Login failed');
                 return false;
             }
         } catch (error) {
