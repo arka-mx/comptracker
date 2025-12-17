@@ -3,16 +3,13 @@
 
 export const fetchLeetCodeStats = async (handle) => {
     try {
-        // Attempt to use a public API proxy for LeetCode
-        // If this fails, we fall back to mock data for demonstration
-        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${handle}`);
+        const response = await fetch(`/api/auth/leetcode/${handle}`);
         if (!response.ok) throw new Error('Failed to fetch LeetCode');
         const data = await response.json();
 
-        if (data.status === 'error') throw new Error(data.message);
-
         return {
             count: data.totalSolved,
+            history: data.submissionCalendar, // { "timestamp": count }
             activeSeconds: data.totalSolved * 1800 // Est. 30 mins per problem
         };
     } catch (error) {

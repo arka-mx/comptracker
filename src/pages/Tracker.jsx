@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { fetchLeetCodeStats, fetchCodeForcesStats } from '../services/api';
 import './Tracker.css';
 
-const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, storageKey, apiFunc, userHandle, onUpdateHandle, titleClassName, className }) => {
+const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, storageKey, apiFunc, userHandle, onUpdateHandle, titleClassName, className, onDataFetched }) => {
     const [count, setCount] = useState(() => {
         const saved = localStorage.getItem(storageKey);
         // If saved exists, use it. Otherwise use initialCount if provided, else "-"
@@ -34,6 +34,7 @@ const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, stora
                 const data = await apiFunc(userHandle);
                 const newCount = typeof data === 'object' ? data.count : data;
                 setCount(newCount);
+                if (onDataFetched) onDataFetched(data);
                 toast.success(`Synced ${name} for ${userHandle}!`);
             } else {
                 setTimeout(() => {
@@ -109,6 +110,8 @@ const PlatformCard = ({ name, platformId, icon: Icon, color, initialCount, stora
     );
 };
 
+import SubmissionGraph from '../components/SubmissionGraph';
+
 const Tracker = () => {
     const { user, updateHandle } = useAuth();
 
@@ -117,6 +120,17 @@ const Tracker = () => {
     const leetcodeHandle = user?.apiHandles?.leetcode || defaultHandle;
     const codeforcesHandle = user?.apiHandles?.codeforces || defaultHandle;
 
+    const [leetcodeHistory, setLeetcodeHistory] = useState(() => {
+        const saved = localStorage.getItem(`leetcode_history_${leetcodeHandle}`);
+        return saved ? JSON.parse(saved) : {};
+    });
+
+    const handleLeetCodeData = (data) => {
+        if (data.history) {
+            setLeetcodeHistory(data.history);
+            localStorage.setItem(`leetcode_history_${leetcodeHandle}`, JSON.stringify(data.history));
+        }
+    };
 
     return (
         <div className="tracker-page">
@@ -133,6 +147,7 @@ const Tracker = () => {
                         apiFunc={fetchLeetCodeStats}
                         userHandle={leetcodeHandle}
                         onUpdateHandle={updateHandle}
+                        onDataFetched={handleLeetCodeData}
                     />
 
                     <PlatformCard
@@ -150,10 +165,8 @@ const Tracker = () => {
                 </div>
 
                 <div className="activity-section">
-                    <h2>Recent Activity</h2>
-                    <div className="activity-placeholder">
-                        Graph Placeholder (Activity Heatmap)
-                    </div>
+                    <h2>Recent Activity (LeetCode)</h2>
+                    <SubmissionGraph calendarData={leetcodeHistory} />
                 </div>
             </div>
         </div>

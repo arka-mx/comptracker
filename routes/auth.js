@@ -432,5 +432,62 @@ router.delete('/delete', async (req, res) => {
     }
 });
 
+// @route   GET /api/auth/leetcode/:handle
+// @desc    Fetch LeetCode stats and submission calendar
+router.get('/leetcode/:handle', async (req, res) => {
+    try {
+        const { handle } = req.params;
+        const query = `
+            query userSessionProgress($username: String!) {
+                matchedUser(username: $username) {
+                    submissionCalendar
+                    submitStats {
+                        acSubmissionNum {
+                            difficulty
+                            count
+                            submissions
+                        }
+                    }
+                }
+            }
+        `;
+
+        const response = await fetch('https://leetcode.com/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Referer': 'https://leetcode.com'
+            },
+            body: JSON.stringify({
+                query,
+                variables: { username: handle }
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.errors) {
+            return res.status(404).json({ message: 'User not found or LeetCode API error' });
+        }
+
+        const matchedUser = data.data.matchedUser;
+        if (!matchedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const submissionCalendar = JSON.parse(matchedUser.submissionCalendar);
+        const totalSolved = matchedUser.submitStats.acSubmissionNum.find(s => s.difficulty === 'All').count;
+
+        res.json({
+            totalSolved,
+            submissionCalendar
+        });
+
+    } catch (err) {
+        console.error('LeetCode Proxy Error:', err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 export default router;
 
